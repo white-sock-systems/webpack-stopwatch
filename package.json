@@ -9,9 +9,11 @@
   "scripts": {
     "start": "webpack --config ./sample-application/webpack.config.js",
     "lint": "eslint './*.js' --ext js --quiet",
-    "lint:fix": "yarn lint --fix"
+    "lint:fix": "yarn lint --fix",
+    "test": "jest test/* --verbose --colors"
   },
   "devDependencies": {
+    "jest": "^26.6.3",
     "babel-eslint": "^10.1.0",
     "eslint": "^7.21.0",
     "eslint-config-alloy": "^3.10.0",

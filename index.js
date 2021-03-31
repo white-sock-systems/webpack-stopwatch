@@ -1,14 +1,10 @@
 const fs = require('fs');
 const c = require('ansi-colors');
 
-// TODO: sqush into one feat: init commit
-// TODO: add commitlint
-// TODO: add standard-release like in https://github.com/webpack-contrib/compression-webpack-plugin/blob/master/package.json
-// TODO: add unit tests
 class SimpleStopwatchPlugin {
-    constructor(options) {
-        const statsFolder = options.statsFolder || '.stats';
-        this.statsFilePath = `${statsFolder}/webpack-stopwatch.json`;
+    constructor({ statsFolder } = { statsFolder: './stats' }) {
+        this.statsFolder = statsFolder;
+        this.statsFilePath = `${this.statsFolder}/webpack-stopwatch.json`;
         this.data = JSON.parse(fs.readFileSync(this.statsFilePath, 'utf8'));
 
         this.statsToday = [];
@@ -34,8 +30,16 @@ class SimpleStopwatchPlugin {
 
     analyseAll({ lastBuildDuration }) {
         console.log('Analysing your compile times...');
-        this.analyseInterval({ stats: this.statsToday, label: 'today', lastBuildDuration });
-        this.analyseInterval({ stats: this.statsThisMonth, label: 'this month', lastBuildDuration });
+        this.analyseInterval({
+            stats: this.statsToday,
+            label: 'today',
+            lastBuildDuration,
+        });
+        this.analyseInterval({
+            stats: this.statsThisMonth,
+            label: 'this month',
+            lastBuildDuration,
+        });
     }
 
     analyseInterval = ({ stats, label, lastBuildDuration }) => {
@@ -64,7 +68,7 @@ class SimpleStopwatchPlugin {
             [mode]: { ...this.data[mode], [startTime]: duration },
         };
 
-        fs.writeFileSync(this.statsFilePath, JSON.stringify(updatedData), () => console.log('Stats updated 🎉'));
+        fs.writeFileSync(this.statsFilePath, JSON.stringify(updatedData), () => console.log('Stats updated \u{1f389}'));
     }
 
     aggregate({ mode }) {
