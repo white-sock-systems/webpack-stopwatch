@@ -2,18 +2,31 @@ const fs = require('fs');
 const c = require('ansi-colors');
 
 class SimpleStopwatchPlugin {
-    constructor({ statsFolder } = { statsFolder: './stats' }) {
+    constructor({ statsFolder, quiet } = { statsFolder: './stats', quiet: false }) {
         this.statsFolder = statsFolder;
+        this.quiet = quiet;
         this.statsFilePath = `${this.statsFolder}/webpack-stopwatch.json`;
         this.data = JSON.parse(fs.readFileSync(this.statsFilePath, 'utf8'));
 
         this.statsToday = [];
         this.statsThisMonth = [];
+
+        this.output = [];
+    }
+
+    log(text) {
+        this.output.push(text);
+    }
+
+    print() {
+        if (!this.quiet) {
+            this.output.map((l) => console.log(l));
+        }
     }
 
     apply(compiler) {
         compiler.hooks.done.tap('Hello World Plugin', (stats) => {
-            console.log(c.dim('-----------------------------------------------------------\n'));
+            // you can also access Logger from compilation
 
             const { compilation } = stats;
             const mode = compilation.options.mode || 'development';
@@ -24,12 +37,16 @@ class SimpleStopwatchPlugin {
             this.aggregate({ mode });
             this.updateData({ duration, mode, startTime });
             this.analyseAll({ lastBuildDuration: duration });
-            console.log(c.dim('-----------------------------------------------------------\n'));
+            this.print();
+
+            // TODO: not sure how to handle these logs, seems like i either use this https://github.com/bpedersen/jest-mock-console
+            // TODO: or i return it somehow in stats under warnings
+            // return stats;
         });
     }
 
     analyseAll({ lastBuildDuration }) {
-        console.log('Analysing your compile times...');
+        this.log('Analysing your compile times...');
         this.analyseInterval({
             stats: this.statsToday,
             label: 'today',
@@ -42,25 +59,25 @@ class SimpleStopwatchPlugin {
         });
     }
 
-    analyseInterval = ({ stats, label, lastBuildDuration }) => {
-        console.log(c.bold(`\n${label.toUpperCase()} \n`));
+    analyseInterval({ stats, label, lastBuildDuration }) {
+        this.log(c.bold(`\n${label.toUpperCase()} \n`));
 
         const sum = stats.reduce((a, b) => a + b, 0);
         const avg = Math.round(sum / stats.length) || 0;
 
-        console.info(`${c.bold(avg.toString())} ms average`);
+        this.log(`${c.bold(avg.toString())} ms average`);
 
         const diff = lastBuildDuration - avg;
         const diffAbs = Math.abs(diff);
         const wasSlower = diff >= 0;
 
         if (wasSlower) {
-            console.log(c.red(`${c.bold(diffAbs.toString())} ms slower than average`));
+            this.log(c.red(`${c.bold(diffAbs.toString())} ms slower than average`));
         } else {
-            console.log(c.green(`${c.bold(diffAbs.toString())} ms faster than average`));
+            this.log(c.green(`${c.bold(diffAbs.toString())} ms faster than average`));
         }
-        console.log(c.bold(`${c.bold(sum.toString())} ms total\n`));
-    };
+        this.log(c.bold(`${c.bold(sum.toString())} ms total\n`));
+    }
 
     updateData({ duration, mode, startTime }) {
         const updatedData = {

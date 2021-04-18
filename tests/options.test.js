@@ -1,4 +1,3 @@
-// rome-ignore lint/js/noUndeclaredVariables: explanation here
 const Plugin = require('../index');
 const fs = require('fs');
 jest.mock('fs');
@@ -9,7 +8,7 @@ describe('Options', () => {
 
         fs.readFileSync.mockReturnValueOnce('{}');
 
-        const plugin = new Plugin({ statsFolder: testStatsFolder });
+        const plugin = new Plugin({ statsFolder: testStatsFolder, quiet: true });
         expect(plugin.statsFolder).toBe(testStatsFolder);
     });
 
