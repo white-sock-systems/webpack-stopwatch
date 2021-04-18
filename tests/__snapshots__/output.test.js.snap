@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Compile Output should pass options to plugin 1`] = `"55d43834682a19b3b501bbc22ccb4c32"`;
