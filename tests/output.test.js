@@ -1,7 +1,6 @@
 const webpack = require('webpack');
 const Plugin = require('../index');
 const path = require('path');
-const fs = require('fs');
 
 const co = (compiler) =>
     new Promise((resolve, reject) => {
@@ -16,7 +15,7 @@ const co = (compiler) =>
 
 const compiler = webpack({
     mode: 'development',
-    entry: './sample-application/src/index.js',
+    entry: './__fixtures__/index.js',
     plugins: [new Plugin({ statsFolder: '.stats', quiet: true })],
     output: {
         filename: 'main.js',
