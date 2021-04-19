@@ -7,7 +7,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "webpack --config ./sample-application/webpack.config.js",
+    "start": "webpack --config tests/__fixtures__/webpack.config.js",
     "lint": "eslint . --ext js --quiet",
     "lint:fix": "yarn lint --fix",
     "test": "jest test/* --verbose --colors"

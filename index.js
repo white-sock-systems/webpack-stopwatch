@@ -6,7 +6,14 @@ class SimpleStopwatchPlugin {
         this.statsFolder = statsFolder;
         this.quiet = quiet;
         this.statsFilePath = `${this.statsFolder}/webpack-stopwatch.json`;
-        this.data = JSON.parse(fs.readFileSync(this.statsFilePath, 'utf8'));
+
+        try {
+            this.data = JSON.parse(fs.readFileSync(this.statsFilePath, 'utf8'));
+        } catch (e) {
+            this.data = [];
+            fs.mkdirSync(this.statsFolder);
+            fs.writeFileSync(this.statsFilePath, JSON.stringify({}), { flag: 'w+' });
+        }
 
         this.statsToday = [];
         this.statsThisMonth = [];
@@ -26,8 +33,6 @@ class SimpleStopwatchPlugin {
 
     apply(compiler) {
         compiler.hooks.done.tap('Hello World Plugin', (stats) => {
-            // you can also access Logger from compilation
-
             const { compilation } = stats;
             const mode = compilation.options.mode || 'development';
             const { startTime, endTime } = compilation;
@@ -37,11 +42,9 @@ class SimpleStopwatchPlugin {
             this.aggregate({ mode });
             this.updateData({ duration, mode, startTime });
             this.analyseAll({ lastBuildDuration: duration });
-            this.print();
 
-            // TODO: not sure how to handle these logs, seems like i either use this https://github.com/bpedersen/jest-mock-console
-            // TODO: or i return it somehow in stats under warnings
-            // return stats;
+            // return to console
+            this.print();
         });
     }
 
