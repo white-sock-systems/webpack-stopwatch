@@ -1,5 +1,4 @@
 const fs = require('fs');
-const c = require('ansi-colors');
 
 class SimpleStopwatchPlugin {
     constructor({ statsFolder, quiet } = { statsFolder: './stats', quiet: false }) {
@@ -18,16 +17,12 @@ class SimpleStopwatchPlugin {
         this.statsToday = [];
         this.statsThisMonth = [];
 
-        this.output = [];
-    }
-
-    log(text) {
-        this.output.push(text);
+        this.output = {};
     }
 
     print() {
         if (!this.quiet) {
-            this.output.map((l) => console.log(l));
+            console.log(JSON.stringify(this.output, null, 4));
         }
     }
 
@@ -39,6 +34,7 @@ class SimpleStopwatchPlugin {
 
             // update data sheet
             const duration = endTime - startTime;
+            this.output.duration = duration;
             this.aggregate({ mode });
             this.updateData({ duration, mode, startTime });
             this.analyseAll({ lastBuildDuration: duration });
@@ -49,7 +45,7 @@ class SimpleStopwatchPlugin {
     }
 
     analyseAll({ lastBuildDuration }) {
-        this.log('Analysing your compile times...');
+        console.log('Analysing your compile times...');
         this.analyseInterval({
             stats: this.statsToday,
             label: 'today',
@@ -57,29 +53,21 @@ class SimpleStopwatchPlugin {
         });
         this.analyseInterval({
             stats: this.statsThisMonth,
-            label: 'this month',
+            label: 'current month',
             lastBuildDuration,
         });
     }
 
     analyseInterval({ stats, label, lastBuildDuration }) {
-        this.log(c.bold(`\n${label.toUpperCase()} \n`));
-
-        const sum = stats.reduce((a, b) => a + b, 0);
-        const avg = Math.round(sum / stats.length) || 0;
-
-        this.log(`${c.bold(avg.toString())} ms average`);
-
+        const total = stats.reduce((a, b) => a + b, 0);
+        const avg = Math.round(total / stats.length) || 0;
         const diff = lastBuildDuration - avg;
-        const diffAbs = Math.abs(diff);
-        const wasSlower = diff >= 0;
 
-        if (wasSlower) {
-            this.log(c.red(`${c.bold(diffAbs.toString())} ms slower than average`));
-        } else {
-            this.log(c.green(`${c.bold(diffAbs.toString())} ms faster than average`));
-        }
-        this.log(c.bold(`${c.bold(sum.toString())} ms total\n`));
+        this.output[label] = {
+            avg,
+            diff,
+            total,
+        };
     }
 
     updateData({ duration, mode, startTime }) {
