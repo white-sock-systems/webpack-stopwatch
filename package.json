@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "main": "index.js",
   "repository": "git@github.com:white-sock-systems/webpack-stopwatch.git",
-  "author": "Winston Sebesta <winston@sebesta.io>",
+  "author": "winstonthehun",
   "license": "MIT",
   "private": true,
   "scripts": {
