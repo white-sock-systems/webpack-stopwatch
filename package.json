@@ -5,7 +5,7 @@
   "repository": "git@github.com:white-sock-systems/webpack-stopwatch.git",
   "author": "winstonthehun",
   "license": "MIT",
-  "private": true,
+  "files": ["index.js"],
   "scripts": {
     "start": "webpack --config tests/__fixtures__/webpack.config.js",
     "lint": "eslint . --ext js --quiet",
