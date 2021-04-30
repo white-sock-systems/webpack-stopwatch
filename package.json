@@ -26,7 +26,6 @@
   },
   "dependencies": {
     "@commitlint/cli": "^12.1.1",
-    "@commitlint/config-conventional": "^12.1.1",
-    "ansi-colors": "^4.1.1"
+    "@commitlint/config-conventional": "^12.1.1"
   }
 }
