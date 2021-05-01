@@ -1,6 +1,11 @@
 # webpack-stopwatch
 Track the time you spend waiting for webpack!
 
+![GitHub](https://img.shields.io/github/license/white-sock-systems/webpack-stopwatch?style=flat-square)
+![npm](https://img.shields.io/npm/dy/webpack-stopwatch?style=flat-square)
+![npm bundle size](https://img.shields.io/bundlephobia/min/webpack-stopwatch?style=flat-square)
+![npm](https://img.shields.io/npm/v/webpack-stopwatch?style=flat-square)
+
 ## Getting Started
 
 ### Install
