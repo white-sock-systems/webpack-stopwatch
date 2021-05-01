@@ -1,18 +1,30 @@
 {
   "name": "webpack-stopwatch",
+  "description": "Track the time you spend waiting for webpack!",
   "version": "0.0.3",
   "main": "index.js",
   "repository": "git@github.com:white-sock-systems/webpack-stopwatch.git",
   "author": "winstonthehun",
   "license": "MIT",
-  "files": ["index.js"],
+  "keywords": [
+    "webpack",
+    "timer",
+    "stopwatch",
+    "metrics"
+  ],
+  "files": [
+    "index.js"
+  ],
   "scripts": {
     "start": "webpack --config tests/__fixtures__/webpack.config.js",
     "lint": "eslint . --ext js --quiet",
     "lint:fix": "yarn lint --fix",
-    "test": "jest test/* --verbose --colors"
+    "test": "jest test/* --verbose --colors",
+    "release": "standard-version"
   },
   "devDependencies": {
+    "@commitlint/cli": "^12.1.1",
+    "@commitlint/config-conventional": "^12.1.1",
     "babel-eslint": "^10.1.0",
     "eslint": "^7.21.0",
     "eslint-config-alloy": "^3.10.0",
@@ -21,9 +33,8 @@
     "husky": "^6.0.0",
     "jest": "^26.6.3",
     "prettier": "^2.2.1",
+    "standard-version": "^9.2.0",
     "webpack": "^5.24.4",
-    "webpack-cli": "^4.5.0",
-    "@commitlint/cli": "^12.1.1",
-    "@commitlint/config-conventional": "^12.1.1"
+    "webpack-cli": "^4.5.0"
   }
 }
