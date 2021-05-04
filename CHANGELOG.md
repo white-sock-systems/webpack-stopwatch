@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.5](https://github.com/white-sock-systems/webpack-stopwatch/compare/v0.0.4...v0.0.5) (2021-05-04)
+
+
+### Features
+
+* support webpack 4 compilation time mapping ([c27e6f5](https://github.com/white-sock-systems/webpack-stopwatch/commit/c27e6f5a5b1c3a28f6b25791394ef5226f364acb))
+
 ### 0.0.4 (2021-05-01)
 
 
