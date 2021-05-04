@@ -30,7 +30,18 @@ class SimpleStopwatchPlugin {
         compiler.hooks.done.tap('Hello World Plugin', (stats) => {
             const { compilation } = stats;
             const mode = compilation.options.mode || 'development';
-            const { startTime, endTime } = compilation;
+
+            let startTime = 0;
+            let endTime = 0;
+            if (compilation.hasOwnProperty('startTime')) {
+                // webpack 5
+                startTime = compilation.startTime;
+                endTime = compilation.endTime;
+            } else {
+                // webpack 4
+                startTime = stats.startTime;
+                endTime = stats.endTime;
+            }
 
             // update data sheet
             const duration = endTime - startTime;
